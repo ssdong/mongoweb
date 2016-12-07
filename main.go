@@ -6,10 +6,10 @@ import (
 )
 
 func main() {
-	// Check if there is already a mongodb instance running
+	//Ensure that MongoDB is running before attempting to start the mongo shell
 	cmd := exec.Command("mongo")
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("MongoDB needs to run before mongo shell")
 	}
 }
