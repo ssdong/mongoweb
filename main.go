@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"mongoweb/command"
 	"os/exec"
 )
 
@@ -12,4 +13,7 @@ func main() {
 	if err != nil {
 		log.Fatal("MongoDB needs to run before mongo shell")
 	}
+
+	commandManager := new(command.CmdManager)
+	commandManager.GetDbs()
 }
