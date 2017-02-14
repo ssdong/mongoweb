@@ -1,19 +1,44 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
-	"mongoweb/command"
+	"mongoweb/server"
+	"os"
 	"os/exec"
 )
 
+var usage = `
+  Usage: mongoweb [options]
+
+  -port <port>     The port that mongoweb listens to
+`
+
 func main() {
-	//Ensure that MongoDB is running before attempting to start the mongo shell
+	if len(os.Args) < 2 {
+		man()
+	}
+
+	var port string
+
+	flag.StringVar(&port, "port", "", "The port that mongoweb listens to")
+
+	flag.Parse()
+
+	// Check if there is only a MongoDB instance running
 	cmd := exec.Command("mongo")
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal("MongoDB needs to run before mongo shell")
+		log.Fatal("Error: MongoDB needs to run before this client")
 	}
 
-	commandManager := new(command.CmdManager)
-	commandManager.GetDbs()
+	// @TODO Check if port is available
+	server.Listen(":" + port)
+}
+
+// This will print out the flag options
+func man() {
+	fmt.Printf("%s\n", usage)
+	os.Exit(0)
 }
